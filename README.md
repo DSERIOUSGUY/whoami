@@ -1,5 +1,5 @@
 # whoami
-Requires opencv, pillow, numpy
+Requires opencv, PIL, numpy
 
 Implements image to asci from scratch.
 
