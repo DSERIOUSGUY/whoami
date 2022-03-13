@@ -7,6 +7,8 @@ import os
 # img_path = 'test1.jpeg'
 img_path_temp = 'test_temp.jpeg'
 img_op = "whoami.txt"
+sens = 90
+inverted = 0
 
 def get_image():
 
@@ -33,18 +35,20 @@ def make_new(img_path):
 
     for i in range(len(img)):
         for j in range(len(img[i])):
-            if img[i][j] >= 80:
-                pic_array[i][j] = int(1)
+            if img[i][j] >= sens:
+                pic_array[i][j] = inverted
             else:
-                pic_array[i][j] = int(0)
+                pic_array[i][j] = not inverted
 
     #print(pic_array)
     return pic_array
 
 
+
 get_image()
 resize_image(img_path_temp)
 text = make_new(img_path_temp)
+
 
 os.remove(img_path_temp)
 
@@ -55,7 +59,18 @@ f.close()
 f = open(img_op,"a")
 for i in range(len(text)):
     for j in range(len(text[i])):
-        if(text[i][j]):
+
+
+        if(
+        i>1 and j>1 and i<len(text)-1 and j<len(text[i])-1 and\
+        text[i-1][j] and text[i+1][j] and\
+        text[i][j-1] and text[i][j+1] and\
+        text[i-1][j-1] and text[i+1][j+1] and\
+        text[i+1][j-1] and text[i-1][j+1]and\
+        text[i][j]):
+            f.write(str('@'))
+
+        elif(text[i][j]):
             f.write(str('#'))
         else:
             f.write(str(' '))
