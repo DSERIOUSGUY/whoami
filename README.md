@@ -1,7 +1,7 @@
 # whoami
-Requires opencv, pillow, numpy
+Requires opencv, PIL, numpy
 
-Implements image to asci from scratch.
+Implements image to ascii from scratch.
 
 press 'q' to exit/capture image
 
