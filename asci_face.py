@@ -15,7 +15,7 @@ img_path_temp = 'test_temp.jpeg'
 img_op = "whoami.txt"
 img_bg_path = "whoami.png"
 
-sens = 120
+sens = 95
 inverted = 0
 img_size = (250,100)
 txt_size = (140,40)
@@ -155,9 +155,9 @@ def ascii_video(img_path_temp,img_size):
                 text[i-1][j-1] and text[i+1][j+1] and\
                 text[i+1][j-1] and text[i-1][j+1]and\
                 text[i][j]):
-                    cv2.putText(frame,'@',(9*j,16*i),fontFace=cv2.FONT_HERSHEY_SIMPLEX,fontScale=0.3,color=(text_color,0,0),thickness=1)
+                    cv2.putText(frame,'@',(9*j,16*i),fontFace=cv2.FONT_HERSHEY_SIMPLEX,fontScale=0.3,color=(text_color,text_color,text_color),thickness=1)
                 elif(text[i][j]):
-                    cv2.putText(frame,'#',(9*j,16*i),fontFace=cv2.FONT_HERSHEY_SIMPLEX,fontScale=0.3,color=(text_color,0,0),thickness=1)
+                    cv2.putText(frame,'#',(9*j,16*i),fontFace=cv2.FONT_HERSHEY_SIMPLEX,fontScale=0.3,color=(text_color,text_color,text_color),thickness=1)
 
         frame = cv2.resize(frame,(600,400))
         cv2.imshow('video', frame)
