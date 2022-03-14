@@ -1,7 +1,7 @@
 # whoami
 Requires opencv, PIL, numpy
 
-Implements image to asci from scratch.
+Implements image to ascii from scratch.
 
 press 'q' when dialog box appears to capture image
 add argument 1/0 for inverted(black-on-white)/normal(white-on-black) image
