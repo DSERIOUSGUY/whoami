@@ -6,6 +6,9 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 
+from thread_lib import matrix_threaded_rows_for
+from multiprocessing import Queue
+
 import sys
 
 
@@ -15,7 +18,7 @@ img_path_temp = 'test_temp.jpeg'
 img_op = "whoami.txt"
 img_bg_path = "whoami.png"
 
-sens = 95
+sens = 110
 inverted = 0
 img_size = (250,100)
 txt_size = (140,40)
@@ -129,6 +132,29 @@ def write_to_text(text):
 
 ###########################VIDEO############################################
 
+#assigning symbols to pixels
+def make_pixel(args):
+
+    i = args[-1]
+    text = args[0]
+
+    frame = args[1]
+
+
+    for j in range(len(text[i])):
+        if(
+        i>1 and j>1 and i<len(text)-1 and j<len(text[i])-1 and\
+        text[i-1][j] and text[i+1][j] and\
+        text[i][j-1] and text[i][j+1] and\
+        text[i-1][j-1] and text[i+1][j+1] and\
+        text[i+1][j-1] and text[i-1][j+1]and\
+        text[i][j]):
+            cv2.putText(frame,'@',(9*j,16*i),fontFace=cv2.FONT_HERSHEY_SIMPLEX,fontScale=0.3,color=(text_color,text_color,text_color),thickness=1)
+        elif(text[i][j]):
+            cv2.putText(frame,'#',(9*j,16*i),fontFace=cv2.FONT_HERSHEY_SIMPLEX,fontScale=0.3,color=(text_color,text_color,text_color),thickness=1)
+
+
+
 def ascii_video(img_path_temp,img_size):
     cam = cv2.VideoCapture(0)
     while(True):
@@ -145,19 +171,7 @@ def ascii_video(img_path_temp,img_size):
         frame[frame>=0]=bg_color
         frame = cv2.resize(frame,(1280,650))
 
-        #make ascii for each frame
-        for i in range(len(text)):
-            for j in range(len(text[i])):
-                if(
-                i>1 and j>1 and i<len(text)-1 and j<len(text[i])-1 and\
-                text[i-1][j] and text[i+1][j] and\
-                text[i][j-1] and text[i][j+1] and\
-                text[i-1][j-1] and text[i+1][j+1] and\
-                text[i+1][j-1] and text[i-1][j+1]and\
-                text[i][j]):
-                    cv2.putText(frame,'@',(9*j,16*i),fontFace=cv2.FONT_HERSHEY_SIMPLEX,fontScale=0.3,color=(text_color,text_color,text_color),thickness=1)
-                elif(text[i][j]):
-                    cv2.putText(frame,'#',(9*j,16*i),fontFace=cv2.FONT_HERSHEY_SIMPLEX,fontScale=0.3,color=(text_color,text_color,text_color),thickness=1)
+        matrix_threaded_rows_for(make_pixel,text,[frame])
 
         frame = cv2.resize(frame,(600,400))
         cv2.imshow('video', frame)
