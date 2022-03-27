@@ -3,6 +3,7 @@ from multiprocessing import Process,Queue
 from time import sleep
 
 timeout = 0
+confirmation_ratio = 0.75
 
 def simple_threaded_for(func, args_list):
 
@@ -92,7 +93,7 @@ def matrix_threaded_rows_for(func, matrix, fn_args_list):
         threads_array.append(t)
 
     #wait for each thread to complete
-    for i in range(int(len(threads_array)/2)):
+    for i in range(int(len(threads_array)*confirmation_ratio)):
         threads_array[i].join()
         if(threads_array[i].is_alive):
             sleep(timeout)

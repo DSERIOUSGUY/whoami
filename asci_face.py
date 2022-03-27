@@ -140,7 +140,6 @@ def make_pixel(args):
 
     frame = args[1]
 
-
     for j in range(len(text[i])):
         if(
         i>1 and j>1 and i<len(text)-1 and j<len(text[i])-1 and\
@@ -149,9 +148,18 @@ def make_pixel(args):
         text[i-1][j-1] and text[i+1][j+1] and\
         text[i+1][j-1] and text[i-1][j+1]and\
         text[i][j]):
-            cv2.putText(frame,'@',(9*j,16*i),fontFace=cv2.FONT_HERSHEY_SIMPLEX,fontScale=0.3,color=(text_color,text_color,text_color),thickness=1)
+            cv2.putText(frame,'0',(9*j,16*i),fontFace=cv2.FONT_HERSHEY_SIMPLEX,fontScale=0.3,color=(text_color,text_color,text_color),thickness=1)
+
+        elif((i>1 and j>1 and i<len(text)-1 and j<len(text[i])-1 ) and\
+        ((text[i][j] and (not text[i-1][j])) or (text[i][j] and (not text[i+1][j])))):
+            cv2.putText(frame,'|',(9*j,16*i),fontFace=cv2.FONT_HERSHEY_SIMPLEX,fontScale=0.3,color=(text_color,text_color,text_color),thickness=1)
+
+        elif((i>1 and j>1 and i<len(text)-1 and j<len(text[i])-1 ) and\
+         ((text[i][j] and (not text[i][j-1])) or (text[i][j] and (not text[i][j+1])))):
+            cv2.putText(frame,'-',(9*j,16*i),fontFace=cv2.FONT_HERSHEY_SIMPLEX,fontScale=0.3,color=(text_color,text_color,text_color),thickness=1)
+
         elif(text[i][j]):
-            cv2.putText(frame,'#',(9*j,16*i),fontFace=cv2.FONT_HERSHEY_SIMPLEX,fontScale=0.3,color=(text_color,text_color,text_color),thickness=1)
+            cv2.putText(frame,'1',(9*j,16*i),fontFace=cv2.FONT_HERSHEY_SIMPLEX,fontScale=0.3,color=(text_color,text_color,text_color),thickness=1)
 
 
 
@@ -173,7 +181,7 @@ def ascii_video(img_path_temp,img_size):
 
         matrix_threaded_rows_for(make_pixel,text,[frame])
 
-        frame = cv2.resize(frame,(600,400))
+        frame = cv2.resize(frame,(900,600))
         cv2.imshow('video', frame)
 
         # creating 'q' as the quit
